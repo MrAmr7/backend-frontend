@@ -5,7 +5,9 @@ import just from "../assets/just.jpg";
 import doImg from "../assets/do.jpeg";
 import useImg from "../assets/use.webp";
 import jpgImg from "../assets/jpg.webp";
-import look from "../assets/look.webp";
+import kull from "../assets/kull.jpg";
+import  look from "../assets/look.webp";
+
 
 const Home = () => {
   const navigate = useNavigate();
@@ -96,9 +98,9 @@ const Home = () => {
     { title: 'Italian Pasta', img: doImg, price: 12 },
     { title: 'Tasty Drinks', img: useImg, price: 5 },
     { title: 'Desserts', img: jpgImg, price: 7 },
-    { title: 'Starters', img: look, price: 6 },
+    { title: 'Starters', img: kull, price: 6 },
     { title: 'Specials', img: just, price: 15 },
-    { title: 'Starters', img: look, price: 6 },
+    { title: 'Starters', img: kull, price: 6 },
     { title: 'Specials', img: just, price: 15 },
   ];
 
@@ -126,7 +128,7 @@ const Home = () => {
       {/* ✅ Hero Section */}
       <div className="w-full h-[400px] relative">
         <img
-          src={look}
+          src={kull}
           alt="Restaurant"
           className="w-full h-full object-cover"
         />
@@ -196,7 +198,7 @@ const Home = () => {
       </div>
 
       {/* ✅ Recent Posts */}
-      <div className="px-6 py-10">
+      <div className="px-6 py-8">
         <h2 className="text-2xl text-center font-semibold text-blue-900 mb-4">Recent Posts</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {posts.length > 0 ? (
@@ -211,7 +213,7 @@ const Home = () => {
                     className="w-full h-48 object-cover rounded-lg shadow mb-4"
                   />
                 )}
-                <p className="text-lg font-semibold text-blue-900 mb-4">${post.price}</p> {/* Price added */}
+                <p className="text-lg font-semibold text-blue-900 mb-4">${post.price}</p> 
                 <div className="flex justify-between mt-2">
                   <button
                     onClick={() => navigate(`/edit/${post._id}`)}
@@ -220,13 +222,15 @@ const Home = () => {
                     Edit
                   </button>
                   <button
-                    onClick={() => handleDelete(post._id)}  // Post deletion integrated here
+                    onClick={() => handleDelete(post._id)} 
                     className="bg-red-500 hover:bg-red-600 text-white text-xs px-10  py-3 rounded"
                   >
                     Delete
                   </button>
                 </div>
-                {/* ✅ Display creation time */}
+                <div className=' flex gap-4 mt-4'>
+                  <button className='bg-blue-950 rounded text-white w-[100%] p-1 '>add card</button>
+                </div>
                 <p className="text-xs text-gray-500 mt-2">{formatDate(post.createdAt)}</p>
               </div>
             ))
@@ -235,6 +239,20 @@ const Home = () => {
           )}
         </div>
       </div>
+
+      {/* ✅ Footer */}
+      <footer className="bg-blue-950 text-white mt-12 py-8 px-6">
+        <div>
+          <h4 className="text-lg font-semibold mb-2">Contact Us</h4>
+          <p className="text-sm text-gray-300">📞 +250 795980634</p>
+          <p className="text-sm text-gray-300">📧 support@restroapp.com</p>
+          <p className="text-sm text-gray-300 mt-2">📍 123 Main Street, Foodville</p>
+        </div>
+
+        <div className="mt-8 text-center text-sm text-gray-400 border-t border-blue-800 pt-4">
+          © {new Date().getFullYear()} RestroApp. All rights reserved.
+        </div>
+      </footer>
     </div>
   );
 };

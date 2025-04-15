@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import put from "../assets/put.png"; // Assuming you have this image in assets
+import put from "../assets/put.png";
 
 const CreatePost = () => {
   const navigate = useNavigate();
@@ -17,8 +17,8 @@ const CreatePost = () => {
     isVegetarian: false,
     image: true,
     content: '',
-    difficulty: '',  // Added field for cooking difficulty
-    cuisineType: '', // Added field for cuisine type
+    difficulty: '',  
+    cuisineType: '', 
   });
   const [imagePreview, setImagePreview] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
@@ -49,7 +49,7 @@ const CreatePost = () => {
       image: file,
     }));
 
-    // Image Preview
+   
     const reader = new FileReader();
     reader.onloadend = () => {
       setImagePreview(reader.result);
@@ -75,8 +75,8 @@ const CreatePost = () => {
     formDataToSend.append('contactInfo', formData.contactInfo);
     formDataToSend.append('isVegetarian', formData.isVegetarian ? 'true' : 'false');
     formDataToSend.append('content', formData.content);
-    formDataToSend.append('difficulty', formData.difficulty);  // Send difficulty level
-    formDataToSend.append('cuisineType', formData.cuisineType); // Send cuisine type
+    formDataToSend.append('difficulty', formData.difficulty); 
+    formDataToSend.append('cuisineType', formData.cuisineType);
     if (formData.image) {
       formDataToSend.append('image', formData.image);
     }
@@ -104,11 +104,11 @@ const CreatePost = () => {
           isVegetarian: false,
           image: true,
           content: '',
-          difficulty: '',  // Reset difficulty
-          cuisineType: '',  // Reset cuisine type
+          difficulty: '',  
+          cuisineType: '',  
         });
         setImagePreview(null);
-        navigate('/home'); // Redirect to home page after successful post creation
+        navigate('/home'); 
       } else {
         console.log('Error creating post');
         const errorResponse = await response.json();

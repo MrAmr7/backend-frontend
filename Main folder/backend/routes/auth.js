@@ -85,16 +85,19 @@ router.post('/login', async (req, res) => {
 router.post(
   '/createpost',
   verifyToken,
-  upload.single('image'), 
+  upload.single('image'),
   [
     body('title').notEmpty().withMessage('Title is required'),
     body('content').notEmpty().withMessage('Content is required'),
+    body('price')
+      .notEmpty().withMessage('Price is required')
+      .isNumeric().withMessage('Price must be a number'),
   ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-    const { title, content } = req.body;
+    const { title, content, price } = req.body;
     const userId = req.user.id;
 
     try {
@@ -105,6 +108,7 @@ router.post(
         userId,
         title,
         content,
+        price,
         imageUrl: req.file ? req.file.path : null,
       });
       await newPost.save();
@@ -120,18 +124,18 @@ router.post(
   }
 );
 
-router.get('/posts', verifyToken, async (req, res) => {
+// GET route for fetching all posts
+router.get('/posts', async (req, res) => {
   try {
-    const userId = req.user.id;
-    const posts = await Post.find({ userId }).sort({ createdAt: -1 });
-
+    const posts = await Post.find().sort({ createdAt: -1 }); // Sort posts by creation date (most recent first)
     res.status(200).json(posts);
   } catch (error) {
     console.error('Error fetching posts:', error);
-    res.status(500).json({ message: 'Failed to fetch posts' });
+    res.status(500).json({ message: 'Internal server error.' });
   }
 });
 
+module.exports = router;
 router.post('/logout', (req, res) => {
   res.status(200).json({
     message: 'Logout successful. Please delete your token on the client-side.',
@@ -189,11 +193,14 @@ router.delete('/deletepost/:id', verifyToken, async (req, res) => {
 
   try {
     const post = await Post.findById(postId);
-    if (!post) return res.status(404).json({ message: 'Post not found' });
-    
-    // Ensure the post belongs to the user
-    if (post.userId.toString() !== userId)
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    // Ensure the post belongs to the logged-in user
+    if (post.userId.toString() !== userId) {
       return res.status(403).json({ message: 'Not authorized to delete this post' });
+    }
 
     await Post.findByIdAndDelete(postId);
     res.status(200).json({ message: 'Post deleted successfully' });
@@ -202,5 +209,6 @@ router.delete('/deletepost/:id', verifyToken, async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+
 
 module.exports = router;
